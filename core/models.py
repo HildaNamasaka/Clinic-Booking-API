@@ -19,14 +19,20 @@ class Patient(models.Model):
 
 class Appointment(models.Model):
     class Status(models.TextChoices):
+        
         BOOKED = 'booked', 'Booked'
         CANCELLED = 'cancelled', 'Cancelled'
+        COMPLETE = 'complete', 'Complete'
     
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    
     slot_time = models.DateTimeField()
     status = models.CharField(max_length=250, choices=Status.choices, default=Status.BOOKED)
     cancel_reason = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         unique_together = ('doctor', 'slot_time')
