@@ -35,7 +35,8 @@ class Appointment(models.Model):
 
 
     class Meta:
-        unique_together = ('doctor', 'slot_time')
+        #unique_together = ('doctor', 'slot_time')
+        pass
     
     def __str__(self):
         return f"{self.patient.full_name}'s appointment with {self.doctor.full_name}"

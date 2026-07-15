@@ -1,16 +1,18 @@
 from rest_framework import serializers
 from .models import Doctor, Patient, Appointment
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 class DoctorSerializer(serializers.ModelSerializer):
     available_slots = serializers.SerializerMethodField()
     
     def get_available_slots(self, obj):
-        date = self.context.get('date')
+        date_str = self.context.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date()
 
         slots=[]
-        current = datetime.combine(date, obj.work_start)
-        end = datetime.combine(date, obj.work_end)
+        current = timezone.make_aware(datetime.combine(date, obj.work_start))
+        end = timezone.make_aware(datetime.combine(date, obj.work_end))
 
         while current < end:
             slots.append(current)

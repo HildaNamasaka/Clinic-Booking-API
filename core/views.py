@@ -16,6 +16,8 @@ class BookAppointment(APIView):
         
         if slot_time.time() < doctor.work_start or slot_time.time() > doctor.work_end:
             return Response({'Error' : 'Slot is outside working hours'}, status=status.HTTP_400_BAD_REQUEST)
+        if slot_time < datetime.now():
+            return Response({'Error' : 'Cannot book an appointment in the past'}, status=status.HTTP_400_BAD_REQUEST)
         
         with transaction.atomic():
             already_booked = Appointment.objects.select_for_update().filter(
@@ -71,6 +73,9 @@ class RescheduleAppointment(APIView):
 
         if new_slot_time.time() < appointment.doctor.work_start or new_slot_time.time() > appointment.doctor.work_end:
             return Response({'Error' : 'Slot outside working houres'}, status=status.HTTP_400_BAD_REQUEST)
+        if new_slot_time < datetime.now():
+            return Response({'Error' : 'Cannot reschedule to a past time'}, status=status.HTTP_400_BAD_REQUEST)
+        
         with transaction.atomic():
             already_booked = Appointment.objects.select_for_update().filter(
                 doctor = appointment.doctor,
