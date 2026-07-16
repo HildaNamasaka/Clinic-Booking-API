@@ -5,7 +5,7 @@ from .serializers import AppointmentSerializer, DoctorSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Doctor, Patient, Appointment
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -15,10 +15,10 @@ class BookAppointment(APIView):
         slot_time = datetime.strptime(request.data.get('slot_time'), '%Y-%m-%d %H:%M')
         
         if slot_time.time() < doctor.work_start or slot_time.time() > doctor.work_end:
-            return Response({'Error' : 'Slot is outside working hours'}, status=status.HTTP_400_BAD_REQUEST)
-        if slot_time < datetime.now():
-            return Response({'Error' : 'Cannot book an appointment in the past'}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response({'Error': 'Slot is outside working hours'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if slot_time < datetime.now() + timedelta(hours=1):
+            return Response({'Error': 'Cannot book a slot in the past or within 1 hour from now'}, status=status.HTTP_400_BAD_REQUEST)
         with transaction.atomic():
             already_booked = Appointment.objects.select_for_update().filter(
                 doctor=doctor,
