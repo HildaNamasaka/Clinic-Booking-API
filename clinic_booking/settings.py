@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-otd2hs8za7-e@&26m_r=a@olwl&l^um67-at74$od62l4!=7#%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['clinic-booking-api-0bx3.onrender.com', '127.0.0.1', 'localhost']
 
