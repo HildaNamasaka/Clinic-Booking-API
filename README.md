@@ -126,7 +126,7 @@ python manage.py runserver
 
 ## Deployment
 - **Platform:** Render.com
-- **Live URL:** https://clinic-booking-api-0bx3.onrender.com
+- **Live URL:** https://clinic-booking-api-0bx3.onrender.com/api/appointments
 - **Branch that triggers deployment:** main
 - **How:** Merging to main triggers the GitHub Actions pipeline which runs tests then calls the Render deploy hook to auto-deploy
 
