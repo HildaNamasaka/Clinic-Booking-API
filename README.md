@@ -141,17 +141,28 @@ GitHub Actions pipeline (.github/workflows/deploy.yml):
 
 ## Section 4: AI Reflection
 
-1. What did you use AI for across the four sections?
+**1. What did you use AI for across the four sections?**
 - Section 1: Used AI to help structure the README and identify trade-offs worth documenting such as dynamic slot generation vs storing slots in the DB
 - Section 2: Used AI to debug the slot generation logic in the serializer, suggest select_for_update() for concurrency control, and review view logic for edge cases
 - Section 3: Used AI to generate the GitHub Actions YAML structure and configure the Render deploy hook integration
 
-2. Give one example where an AI suggestion improved your work. What did you prompt it with?
-I prompted AI with "how do I prevent two patients from booking the same slot at the same time?" — it suggested using select_for_update() inside transaction.atomic(). This was a significant improvement because a simple filter check without locking would have allowed race conditions under concurrent load. The suggestion made the booking logic production-grade rather than just functionally correct.
+**2. Give one example where an AI suggestion improved your work. What did you prompt it with?**
+ I prompted AI with "how do I prevent two patients from booking the same slot at the same time?" — it suggested using 
+ select_for_update() inside transaction.atomic(). This was a significant improvement because a simple filter check without 
+ locking would have allowed race conditions under concurrent load. The suggestion made the booking logic production-grade 
+ rather than just functionally correct.
 
 **3. Give one example where AI output was wrong or incomplete and how you caught it.**
-AI provided the get_available_slots serializer logic using datetime.combine(date, obj.work_start) without accounting for the fact that date arrives as a raw string from request.query_params. When I tested the availability endpoint I got TypeError: combine() argument 1 must be datetime.date, not str. I caught it by reading the error traceback carefully and fixed it by parsing the string first using datetime.strptime(date_str, '%Y-%m-%d').date() before passing it to combine().
+ AI provided the get_available_slots serializer logic using datetime.combine(date, obj.work_start) without accounting for the 
+ fact that date arrives as a raw string from request.query_params. When I tested the availability endpoint I got TypeError: 
+ combine() argument 1 must be datetime.date, not str. I caught it by reading the error traceback carefully and fixed it by 
+ parsing the string first using datetime.strptime(date_str, '%Y-%m-%d').date() before passing it to combine().
 
-4. Name two decisions you made without AI. Why did you trust your own judgment there?**
-- I moved the available_slots logic from AppointmentSerializer to DoctorSerializer. AI initially suggested it in AppointmentSerializer but I caught that Appointment has no work_start or work_end fields — availability is a property of a Doctor, not an Appointment. I trusted my own judgment because I could see from the models that the logic was in the wrong place.
-- I chose direct model manipulation for the cancel endpoint instead of using the serializer. Since I was only updating two fields (status hardcoded, cancel_reason from request) and one of them was not coming from the user, mixing them through a serializer felt unnecessarily complex. I made this call based on clarity and simplicity.
+**4. Name two decisions you made without AI. Why did you trust your own judgment there?**
+ - I moved the available_slots logic from AppointmentSerializer to DoctorSerializer. AI initially suggested it in 
+ AppointmentSerializer but I caught that Appointment has no work_start or work_end fields — availability is a property of a 
+ Doctor, not an Appointment. I trusted my own judgment because I could see from the models that the logic was in the wrong 
+ place.
+ - I chose direct model manipulation for the cancel endpoint instead of using the serializer. Since I was only updating two 
+ fields (status hardcoded, cancel_reason from request) and one of them was not coming from the user, mixing them through a 
+ serializer felt unnecessarily complex. I made this call based on clarity and simplicity.
