@@ -31,17 +31,17 @@ A REST API for a small clinic booking system built with Django REST Framework. P
 ## Step 2: High Level Design---
 Client
 │
-
+▼
 Django REST Framework API
 │
-|- GET  /api/doctors/{id}/availability
-|- POST /api/appointments/
-|- PATCH /api/appointments/{id}/cancel/
-|-PATCH /api/appointments/{id}/reschedule/
-|- GET  /api/patients/{id}/appointments/
+├── GET  /api/doctors/{id}/availability
+├── POST /api/appointments/
+├── PATCH /api/appointments/{id}/cancel/
+├── PATCH /api/appointments/{id}/reschedule/
+└── GET  /api/patients/{id}/appointments/
 │
+▼
 PostgreSQL Database (Render)
-
 
 ## Step 3: Core Models
 
