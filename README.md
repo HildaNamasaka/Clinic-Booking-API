@@ -108,11 +108,9 @@ Not implemented in this version — noted as a required addition before producti
 | PATCH | /api/appointments/{id}/reschedule/ | Move to new slot |
 | GET | /api/patients/{id}/appointments/ | Upcoming appointments sorted by date |
 
-
+```bash
 
 ## How to Run Locally
-
-
 git clone https://github.com/HildaNamasaka/Clinic-Booking-API.git
 cd Clinic-Booking-API
 python -m venv venv
@@ -120,9 +118,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
-
-
-
+```
 
 ## Deployment
 - **Platform:** Render.com
