@@ -1,4 +1,4 @@
-# Clinic Booking System — Savannah Informatics Backend Assessment
+# Clinic Booking System
 
 ## Overview
 A REST API for a small clinic booking system built with Django REST Framework. Patients can view available slots, book appointments, cancel, and reschedule. Doctors have set working hours and work in 30-minute slots.
